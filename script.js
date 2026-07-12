@@ -7,66 +7,18 @@
    Numbered entries, Lookback-style: "№ 01 - Title (Category)".
    Add or remove entries here; numbering is automatic. */
 const archive = [
-  {
-    title: "Hypnotik FX",
-    category: "Product walkthrough",
-    image: "manual-thumbnails/Hypnotik FX - Setting up Hypnotik LED Strip Controller.jpg",
-  },
-  {
-    title: "X-Pro Controller",
-    category: "UI documentation",
-    image: "manual-thumbnails/X-Pro-Controller.png",
-  },
-  {
-    title: "Audio Reactive",
-    category: "Explainer visual",
-    image: "manual-thumbnails/Audio Reactive Pixel Controller (Wi-Fi).png",
-  },
-  {
-    title: "Effects Panel",
-    category: "Feature showcase",
-    image: "manual-thumbnails/Hypnotik FX - Using Effects.png",
-  },
-  {
-    title: "Segment Setup",
-    category: "Motion-led tutorial",
-    image: "manual-thumbnails/Hypnotik FX - Setting Up Segments in Audio Reactive Controller.jpg",
-  },
-  {
-    title: "Wiring Guide",
-    category: "Technical thumbnail",
-    image: "manual-thumbnails/Wiring_ Vibe X4 Ultra RGB + 3000K_.png",
-  },
-  {
-    title: "Color Palettes",
-    category: "Feature showcase",
-    image: "manual-thumbnails/Hypnotik FX - Using Color Palletes_.png",
-  },
-  {
-    title: "Preset Creation",
-    category: "Product walkthrough",
-    image: "manual-thumbnails/Hypnotik FX - How to Create Presets.png",
-  },
-  {
-    title: "Sync Setup",
-    category: "Explainer visual",
-    image: "manual-thumbnails/Hypnotik FX - Setting up Sync.png",
-  },
-  {
-    title: "Controller Comparison",
-    category: "Educate",
-    image: "manual-thumbnails/Difference between Controllers (Audio Reactive vs. X-Pro Controller).png",
-  },
-  {
-    title: "LED Strip Connection",
-    category: "Technical thumbnail",
-    image: "manual-thumbnails/Connecting the LED Strips.png",
-  },
-  {
-    title: "Power Specifications",
-    category: "Educate",
-    image: "manual-thumbnails/Hypnotik Power Supply Specifications.png",
-  },
+  { title: "Hypnotik FX", category: "Product walkthrough" },
+  { title: "X-Pro Controller", category: "UI documentation" },
+  { title: "Audio Reactive", category: "Explainer visual" },
+  { title: "Effects Panel", category: "Feature showcase" },
+  { title: "Segment Setup", category: "Motion-led tutorial" },
+  { title: "Wiring Guide", category: "Technical thumbnail" },
+  { title: "Color Palettes", category: "Feature showcase" },
+  { title: "Preset Creation", category: "Product walkthrough" },
+  { title: "Sync Setup", category: "Explainer visual" },
+  { title: "Controller Comparison", category: "Educate" },
+  { title: "LED Strip Connection", category: "Technical thumbnail" },
+  { title: "Power Specifications", category: "Educate" },
 ];
 
 function renderArchive() {
@@ -78,13 +30,7 @@ function renderArchive() {
       const no = String(index + 1).padStart(2, "0");
       return `
         <article class="entry">
-          <figure class="entry-media">
-            <img
-              src="${encodeURI(item.image)}"
-              alt="${item.title} - ${item.category}"
-              loading="${index < 4 ? "eager" : "lazy"}"
-            />
-          </figure>
+          <figure class="entry-media"></figure>
           <div class="entry-caption">
             <p class="entry-no">№ ${no}</p>
             <p class="entry-title">${item.title}<em>(${item.category})</em></p>
