@@ -7,18 +7,24 @@
    Numbered entries, Lookback-style: "№ 01 - Title (Category)".
    Add or remove entries here; numbering is automatic. */
 const archive = [
-  { title: "Hypnotik FX", category: "Product walkthrough" },
-  { title: "X-Pro Controller", category: "UI documentation" },
-  { title: "Audio Reactive", category: "Explainer visual" },
-  { title: "Effects Panel", category: "Feature showcase" },
-  { title: "Segment Setup", category: "Motion-led tutorial" },
-  { title: "Wiring Guide", category: "Technical thumbnail" },
-  { title: "Color Palettes", category: "Feature showcase" },
-  { title: "Preset Creation", category: "Product walkthrough" },
-  { title: "Sync Setup", category: "Explainer visual" },
-  { title: "Controller Comparison", category: "Educate" },
-  { title: "LED Strip Connection", category: "Technical thumbnail" },
-  { title: "Power Specifications", category: "Educate" },
+  // RepairMate / RepairMart - Mate Australia
+  { title: "RepairMate Brand Banner", category: "Brand campaign", src: "assets/social/repairmart/brand-banner.jpg" },
+  { title: "iPhone 14 Accessories", category: "Product creative", src: "assets/social/repairmart/iphone14-accessories.jpg" },
+  { title: "iPhone 14 Teaser", category: "Product creative", src: "assets/social/repairmart/iphone14-coming-soon.jpg" },
+  { title: "OnePlus Protection", category: "Product creative", src: "assets/social/repairmart/oneplus-protect.jpg" },
+  { title: "MagSafe Cover", category: "Product creative", src: "assets/social/repairmart/magsafe-cover.jpg" },
+  { title: "Baseus Earphones", category: "Product creative", src: "assets/social/repairmart/baseus-earphones.jpg" },
+  { title: "New vs Repair", category: "Campaign visual", src: "assets/social/repairmart/new-vs-old.jpg" },
+  { title: "Data Privacy Day", category: "Awareness creative", src: "assets/social/repairmart/data-privacy-day.jpg" },
+  // Liumia & Alif Online - Brotherhood, Maldives
+  { title: "Premium Bag Gift", category: "E-commerce creative", src: "assets/social/liumia-alif/premium-bag.jpg" },
+  { title: "Victoria's Secret Set", category: "E-commerce creative", src: "assets/social/liumia-alif/victorias-secret.jpg" },
+  { title: "October Gift Pack", category: "E-commerce creative", src: "assets/social/liumia-alif/october-gift.jpg" },
+  { title: "Nobel Smart TV", category: "E-commerce creative", src: "assets/social/liumia-alif/smart-tv.jpg" },
+  { title: "Nobel Water Dispenser", category: "E-commerce creative", src: "assets/social/liumia-alif/water-dispenser.jpg" },
+  { title: "Ramadan Cookware", category: "E-commerce creative", src: "assets/social/liumia-alif/cookware.jpg" },
+  { title: "Portable Ice Maker", category: "E-commerce creative", src: "assets/social/liumia-alif/ice-maker.jpg" },
+  { title: "Kids Kick Scooter", category: "E-commerce creative", src: "assets/social/liumia-alif/kick-scooter.jpg" },
 ];
 
 function renderArchive() {
@@ -28,9 +34,12 @@ function renderArchive() {
   grid.innerHTML = archive
     .map((item, index) => {
       const no = String(index + 1).padStart(2, "0");
+      const media = item.src
+        ? `<img src="${item.src}" alt="${item.title} - ${item.category}" loading="lazy" />`
+        : "";
       return `
         <article class="entry">
-          <figure class="entry-media"></figure>
+          <figure class="entry-media">${media}</figure>
           <div class="entry-caption">
             <p class="entry-no">№ ${no}</p>
             <p class="entry-title">${item.title}<em>(${item.category})</em></p>
@@ -44,22 +53,83 @@ function renderArchive() {
   });
 }
 
+/* ---- Lightbox viewer ----
+   One overlay shared by the archive grid, the brand galleries and
+   the hero gallery. Click a design to view it full size;
+   Escape, the close button or the backdrop dismisses it. */
+let lightboxEls = null;
+
+function ensureLightbox() {
+  if (lightboxEls) return lightboxEls;
+
+  const overlay = document.createElement("div");
+  overlay.className = "lightbox";
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  overlay.setAttribute("aria-label", "Design viewer");
+  overlay.innerHTML = `
+    <button class="lightbox-close" type="button" aria-label="Close viewer">Close</button>
+    <figure class="lightbox-body">
+      <img alt="" />
+      <figcaption></figcaption>
+    </figure>`;
+  document.body.appendChild(overlay);
+
+  const img = overlay.querySelector("img");
+  const caption = overlay.querySelector("figcaption");
+  const close = () => {
+    overlay.classList.remove("is-open");
+    document.body.classList.remove("lightbox-open");
+    img.removeAttribute("src");
+  };
+
+  overlay.addEventListener("click", (event) => {
+    if (!event.target.closest(".lightbox-body img")) close();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && overlay.classList.contains("is-open")) {
+      close();
+    }
+  });
+
+  lightboxEls = { overlay, img, caption };
+  return lightboxEls;
+}
+
+function openLightbox(src, label) {
+  const { overlay, img, caption } = ensureLightbox();
+  img.src = src;
+  img.alt = label || "";
+  caption.textContent = label || "";
+  overlay.classList.add("is-open");
+  document.body.classList.add("lightbox-open");
+}
+
+function setupLightbox() {
+  document.addEventListener("click", (event) => {
+    const img = event.target.closest(
+      ".entry-media img, .brand-frame-media img"
+    );
+    if (!img) return;
+    openLightbox(img.currentSrc || img.src, img.alt);
+  });
+}
+
 /* ---- The Lookback hero gallery ----
    Infinite momentum loop ported from The Lookback Studio.
    Moves only on user input: drag to fling, horizontal swipe.
    Vertical wheel is left alone so the page still scrolls. */
-/* Dummy frames for now. To use real work, give an entry a `src`
-   (e.g. src: "manual-thumbnails/X-Pro-Controller.png") and it will
-   be used instead of the generated placeholder. */
+/* Real frames from the design archive. An entry without `src`
+   falls back to a generated placeholder. */
 const heroImages = [
-  { title: "Placeholder 01", variant: "wide" },
-  { title: "Placeholder 02" },
-  { title: "Placeholder 03", variant: "tall" },
-  { title: "Placeholder 04", variant: "wide" },
-  { title: "Placeholder 05" },
-  { title: "Placeholder 06", variant: "tall" },
-  { title: "Placeholder 07", variant: "wide" },
-  { title: "Placeholder 08" },
+  { title: "RepairMate - Brand Campaign", src: "assets/social/repairmart/brand-banner.jpg", variant: "wide" },
+  { title: "Liumia - Premium Gift", src: "assets/social/liumia-alif/premium-bag.jpg" },
+  { title: "RepairMart - Baseus Earphones", src: "assets/social/repairmart/baseus-earphones.jpg", variant: "tall" },
+  { title: "RepairMart - iPhone 14 Series", src: "assets/social/repairmart/iphone14-accessories.jpg", variant: "wide" },
+  { title: "Liumia - Victoria's Secret", src: "assets/social/liumia-alif/victorias-secret.jpg" },
+  { title: "Alif Online - Ramadan Cookware", src: "assets/social/liumia-alif/cookware.jpg", variant: "tall" },
+  { title: "Alif Online - Nobel Smart TV", src: "assets/social/liumia-alif/smart-tv.jpg", variant: "wide" },
+  { title: "RepairMart - MagSafe Cover", src: "assets/social/repairmart/magsafe-cover.jpg" },
 ];
 
 function heroPlaceholderSrc(no, variant) {
@@ -104,6 +174,8 @@ function setupHeroGallery() {
   let dragStartTarget = 0;
   let dragLastX = 0;
   let dragVelocity = 0;
+  let dragMoved = 0;
+  let dragDownTarget = null;
   let scrollSounds = [];
   let soundPoolIndex = 0;
   let soundEnabled = false;
@@ -124,6 +196,23 @@ function setupHeroGallery() {
         </article>`;
     })
     .join("");
+
+  /* size each frame from its image's natural aspect ratio -
+     the card width becomes height x ratio (see .hero-card CSS) */
+  Array.from(track.children).forEach((card) => {
+    const img = card.querySelector("img");
+    if (!img) return;
+    const applyRatio = () => {
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      card.style.setProperty(
+        "--card-ar",
+        (img.naturalWidth / img.naturalHeight).toFixed(4)
+      );
+      setup(); // widths changed - rebuild clones and re-measure the loop
+    };
+    if (img.complete) applyRatio();
+    else img.addEventListener("load", applyRatio, { once: true });
+  });
 
   function cloneOriginalSet() {
     track
@@ -223,12 +312,15 @@ function setupHeroGallery() {
     dragVelocity = 0;
     motorVelocity = 0;
     dragStartTarget = targetX;
+    dragMoved = 0;
+    dragDownTarget = event.target;
     viewport.setPointerCapture(event.pointerId);
   });
 
   viewport.addEventListener("pointermove", (event) => {
     if (!isDragging) return;
     dragVelocity = event.clientX - dragLastX;
+    dragMoved += Math.abs(event.clientX - dragLastX);
     dragLastX = event.clientX;
     targetX = dragStartTarget + (event.clientX - dragStartX) * dragMultiplier;
   });
@@ -244,6 +336,15 @@ function setupHeroGallery() {
     if (viewport.hasPointerCapture(event.pointerId)) {
       viewport.releasePointerCapture(event.pointerId);
     }
+    /* a press that never travelled is a click - open the design */
+    if (event.type === "pointerup" && dragMoved < 8 && dragDownTarget) {
+      const card = dragDownTarget.closest(".hero-card");
+      const img = card ? card.querySelector("img") : null;
+      if (img && !img.src.startsWith("data:")) {
+        openLightbox(img.src, card.dataset.title);
+      }
+    }
+    dragDownTarget = null;
   };
 
   viewport.addEventListener("pointerup", endDrag);
@@ -369,4 +470,5 @@ setupTicker();
 setupHeader();
 setupHeroGallery();
 setupBrandPopouts();
+setupLightbox();
 setupReveals();

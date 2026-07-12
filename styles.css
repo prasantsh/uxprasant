@@ -265,7 +265,6 @@ footer.contact {
   --hero-muted: rgba(211, 214, 218, 0.62);
   --hero-accent: #fb4d27;
   --hero-gap: clamp(0.8rem, 1.8vw, 1.35rem);
-  --hero-card-width: clamp(17rem, 30vw, 34rem);
   --hero-card-height: clamp(20rem, 52vh, 38rem);
 
   position: relative;
@@ -316,7 +315,11 @@ footer.contact {
 
 .hero-card {
   position: relative;
-  flex: 0 0 var(--hero-card-width);
+  /* frame takes the image's natural shape: width = height x aspect
+     ratio (--card-ar, set by script.js from naturalWidth/Height) */
+  flex: 0 0 auto;
+  width: calc(var(--hero-card-height) * var(--card-ar, 0.8));
+  max-width: min(84vw, 48rem);
   height: var(--hero-card-height);
   overflow: hidden;
   background: #111;
@@ -352,12 +355,12 @@ footer.contact {
   text-align: right;
 }
 
+/* variants are height steps; width always follows the image aspect */
 .hero-card--wide {
-  flex-basis: clamp(21rem, 42vw, 46rem);
+  height: clamp(16rem, 42vh, 30rem);
 }
 
 .hero-card--tall {
-  flex-basis: clamp(14rem, 23vw, 26rem);
   height: clamp(23rem, 58vh, 42rem);
 }
 
@@ -486,6 +489,19 @@ footer.contact {
   aspect-ratio: 1 / 1;
   background: var(--paper-deep);
   border: 1px solid var(--line-soft);
+}
+
+.entry-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: zoom-in;
+  transition: transform 0.4s ease;
+}
+
+.entry:hover .entry-media img {
+  transform: scale(1.03);
 }
 
 .entry-caption {
@@ -829,6 +845,7 @@ footer.contact {
   padding: clamp(0.5rem, 1.2vw, 0.9rem);
   /* drop the white baked into the JPGs so the marks sit on the paper bg */
   mix-blend-mode: multiply;
+  cursor: zoom-in;
 }
 
 .brand-frame figcaption {
@@ -837,6 +854,168 @@ footer.contact {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+/* ---- Photo-creative variant (social posts, not logos) ----
+   Full-bleed square shots: cover-fit cards, no white-drop blend. */
+.brand-gallery--shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(120px, 15vw, 160px), 1fr));
+}
+
+.brand-gallery--shots .brand-frame {
+  flex: initial;
+}
+
+.brand-gallery--shots .brand-frame-media {
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.brand-gallery--shots .brand-frame-media img {
+  object-fit: cover;
+  padding: 0;
+  mix-blend-mode: normal;
+}
+
+/* ---- Lightbox viewer ----
+   Shared overlay for archive entries, brand galleries and hero cards. */
+body.lightbox-open {
+  overflow: hidden;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: rgba(22, 21, 19, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s ease;
+}
+
+.lightbox-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: min(92vw, 58rem);
+  transform: scale(0.97);
+  transition: transform 0.25s ease;
+}
+
+.lightbox.is-open .lightbox-body {
+  transform: scale(1);
+}
+
+.lightbox-body img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.55);
+  /* paper behind transparent PNGs (logo marks) - invisible on full-bleed shots */
+  background: var(--paper);
+}
+
+.lightbox-body figcaption {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(242, 240, 235, 0.75);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: clamp(1rem, 2.5vw, 1.75rem);
+  right: var(--pad);
+  padding: 0.6em 1.2em;
+  background: transparent;
+  border: 1px solid rgba(242, 240, 235, 0.4);
+  border-radius: 4px;
+  color: rgba(242, 240, 235, 0.9);
+  font: inherit;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.lightbox-close:hover,
+.lightbox-close:focus-visible {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ---- Résumé download ---- */
+.resume-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  margin: clamp(2.5rem, 6vw, 5rem) var(--pad);
+  padding: clamp(1.5rem, 3.5vw, 2.75rem);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.resume-cta-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.resume-cta .section-note {
+  max-width: 34rem;
+}
+
+.resume-button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.9em 1.6em;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.resume-button:hover,
+.resume-button:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.resume-button span {
+  transition: transform 0.25s ease;
+}
+
+.resume-button:hover span,
+.resume-button:focus-visible span {
+  transform: translateY(2px);
 }
 
 /* ================= EXPERIENCE ================= */
@@ -1124,16 +1303,14 @@ footer.contact {
   }
 
   .hero {
-    --hero-card-width: 70vw;
     --hero-card-height: 44vh;
   }
 
   .hero-card--wide {
-    flex-basis: 82vw;
+    height: 36vh;
   }
 
   .hero-card--tall {
-    flex-basis: 62vw;
     height: 48vh;
   }
 
