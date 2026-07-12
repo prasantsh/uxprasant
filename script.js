@@ -288,6 +288,32 @@ function setupHeroGallery() {
   requestAnimationFrame(render);
 }
 
+/* ---- Branding dropdown ----
+   Compact trigger toggles an inline accordion of the designs.
+   Escape closes it while focus is inside. */
+function setupBrandPopouts() {
+  const groups = document.querySelectorAll("[data-brand-popout]");
+  if (!groups.length) return;
+
+  groups.forEach((group) => {
+    const trigger = group.querySelector(".brand-trigger");
+    if (!trigger) return;
+
+    trigger.addEventListener("click", () => {
+      const isOpen = group.classList.toggle("is-open");
+      trigger.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    group.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && group.classList.contains("is-open")) {
+        group.classList.remove("is-open");
+        trigger.setAttribute("aria-expanded", "false");
+        trigger.focus();
+      }
+    });
+  });
+}
+
 /* ---- scroll reveals ---- */
 function setupReveals() {
   const targets = document.querySelectorAll(".reveal");
@@ -342,4 +368,5 @@ renderArchive();
 setupTicker();
 setupHeader();
 setupHeroGallery();
+setupBrandPopouts();
 setupReveals();
