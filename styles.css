@@ -277,6 +277,17 @@ footer.contact {
   color: var(--hero-ink);
 }
 
+/* full-screen hero media (Home) - sits under the ::before overlay */
+.hero-image,
+.hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .hero::before {
   content: "";
   position: absolute;
@@ -474,6 +485,42 @@ footer.contact {
 /* ================= ARCHIVE ================= */
 .archive {
   border-top: none;
+}
+
+/* ---- Archive marquee ----
+   The momentum scroller, relocated from the Home hero. A dark
+   full-bleed band; the .hero-* card/track/viewport styles are reused
+   and the custom properties they read are redefined here. */
+.archive-marquee {
+  --hero-ink: #f2f2f2;
+  --hero-soft: #d3d6da;
+  --hero-accent: #fb4d27;
+  --hero-gap: clamp(0.8rem, 1.8vw, 1.35rem);
+  --hero-card-height: clamp(14rem, 36vh, 26rem);
+
+  position: relative;
+  height: clamp(19rem, 48vh, 34rem);
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  overflow: hidden;
+  background: #030303;
+  border-block: 1px solid var(--line);
+}
+
+.archive-marquee .hero-card--wide {
+  height: clamp(12rem, 30vh, 22rem);
+}
+
+.archive-marquee .hero-card--tall {
+  height: clamp(16rem, 42vh, 30rem);
+}
+
+.archive-marquee .sound-toggle {
+  position: absolute;
+  z-index: 2;
+  left: var(--pad);
+  bottom: 1.1rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
 }
 
 .archive-grid {
