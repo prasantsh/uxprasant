@@ -2,7 +2,35 @@
 designs/
 My Designs/
 the lookback studio/
+manual-thumbnails/
 Portfolio.pdf
 ref.png
 # original CV lives at assets/Prasant_Shrestha_CV.pdf for the site
 Prasant_Shrestha_cv.pdf
+
+# Environment / secrets - never commit these
+.env
+.env.*
+*.env
+.envrc
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+credentials*
+secrets*
+*.secret
+
+# Dependencies / build output (in case tooling is added later)
+node_modules/
+dist/
+build/
+
+# Editor & OS junk
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+.vscode/
+.idea/

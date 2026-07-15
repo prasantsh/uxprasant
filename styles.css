@@ -294,7 +294,6 @@ footer.contact {
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(90deg, #030303, rgba(3, 3, 3, 0.38) 18%, rgba(3, 3, 3, 0.26) 78%, #030303),
     linear-gradient(180deg, rgba(251, 77, 39, 0.14), transparent 28%, rgba(76, 67, 63, 0.18)),
     repeating-linear-gradient(90deg, rgba(211, 214, 218, 0.055) 0 1px, transparent 1px 11vw);
   pointer-events: none;
@@ -424,15 +423,34 @@ footer.contact {
   outline: none;
 }
 
+/* handwritten sign-off; a soft dark glow keeps the white readable
+   against the pale clouds in the video */
+.hero-tagline {
+  margin: 0 0 -0.06em;
+  font-family: "Caveat", "Segoe Script", cursive;
+  font-weight: 600;
+  font-size: clamp(4rem, 12vw, 11rem);
+  line-height: 0.85;
+  letter-spacing: 0;
+  color: #ffffff;
+  text-align: right;
+  text-shadow: 0 2px 28px rgba(35, 32, 74, 0.55);
+}
+
+.hero-tagline em {
+  font-style: normal;
+}
+
 .hero-scroll {
   pointer-events: auto;
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-family: "Shadows Into Light", "Segoe Script", cursive;
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
   color: var(--hero-ink);
   border-bottom: 1px solid var(--hero-ink);
   padding-bottom: 2px;
   width: fit-content;
+  text-shadow: 0 1px 14px rgba(35, 32, 74, 0.45);
   transition: opacity 0.25s ease;
 }
 

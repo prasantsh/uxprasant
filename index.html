@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Prasant Shrestha - The Portfolio</title>
     <meta
       name="description"
@@ -11,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&family=Shadows+Into+Light&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -54,6 +59,7 @@
         <div class="hero-content">
           <div class="hero-foot">
             <a class="hero-scroll" href="archive.html">View the archive →</a>
+            <p class="hero-tagline">Let&rsquo;s <em>Design</em></p>
           </div>
         </div>
       </section>
